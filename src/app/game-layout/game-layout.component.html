@@ -1,16 +1,25 @@
-<div class="min-w-screen min-h-screen flex justify-center items-center py-10">
-
+<div class="min-w-screen min-h-screen flex justify-center items-center py-10"
+  (click)="focusOnInput()"
+>
   <div class="max-w-lg">
     <div class="flex justify-center">
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-2 relative">
         <div *ngFor="let row of board; let rowIndex = index" class="flex flex-row gap-2">
           <app-letter-box 
             *ngFor="let cell of row; let colIndex = index"
-            (guestLetter)="onGuessLetter($event)"
+            [letter]="cell"
           >
-            {{ cell }}
           </app-letter-box>
         </div>
+
+        <input 
+          id="main_input"
+          class="border absolute top-0 -left-64 opacity-0 -z-10"
+          (input)="onInputChange($event)"
+          (keydown)="onKeyDown($event)"
+          [(ngModel)]="guess"
+          maxlength="5"
+        />
       </div>
     </div>
 
@@ -20,11 +29,20 @@
           <app-keyboard-key
             *ngFor="let key of row"
             [key]="key"
+            (click)="onKeyboardUiChange(key)"
           >
           </app-keyboard-key>
         </div>
       </div>
     </div>
   </div>
+</div>
 
+<div 
+  *ngIf="message"
+  class="w-screen h-screen absolute top-0 left-0 right-0 mx-auto flex justify-center items-center"
+>
+  <div class="bg-white rounded-lg shadow-xl p-4">
+    {{ message }}
+  </div>
 </div>
