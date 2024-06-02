@@ -31,12 +31,11 @@ export class GameService {
 
     const row = this.board.findIndex(r => r.every(c => c === ''));
     if (row === -1) {
-      return { success: false, message: 'No more guesses allowed', board: this.board, solved: false };
+      return { success: false, board: this.board, solved: false };
     }
 
     const solved = guess === this.targetWord;
-    const message = solved ? 'Correct guess!' : '';
-    return { success: true, message, board: this.board, solved };
+    return { success: true, board: this.board, solved };
   }
 
   addLetter(guess: string) {

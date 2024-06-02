@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { GameService } from '../services/game.service';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-game-layout',
@@ -22,7 +23,7 @@ export class GameLayoutComponent implements OnInit {
   previousInput: string = '';
   previousInputLength: number = 0;
   isSubmitRow: boolean[] = [false, false, false, false, false];
-  isGiveUp: boolean = false;
+  isGameOver: boolean = false;
 
   constructor(
     public gameService: GameService,
@@ -122,19 +123,22 @@ export class GameLayoutComponent implements OnInit {
     const result = this.gameService.submitGuess(this.guess);
     if (result.success) {
       this.board = result.board;
-      this.message = result.message;
       if (result.solved) {
-        this.message = 'Congratulations! You solved the puzzle!';
+        this.message = 'Congratulations! You Won!';
+
+        timer(1500).subscribe(() => {
+          this.toggleGameOverPopup();
+        })
       }
     } else {
-      this.message = result.message;
+      this.message = 'You Lost!';
+
+      timer(1500).subscribe(() => {
+        this.toggleGameOverPopup();
+      })
     }
 
     this.guess = '';
-
-    setTimeout(() => {
-      this.message = '';
-    }, 1000);
   }
 
   getGuessIndex(rowIndex: number, colIndex: number): number {
@@ -164,17 +168,17 @@ export class GameLayoutComponent implements OnInit {
     for (let i = 0; i < this.guess.length; i++) {
       const char = this.guess[i];
       if (char === this.gameService.targetWord[i]) {
-        this.keys[char] = 'bg-green-400 text-white';
+        this.keys[char] = '!bg-green-400 !text-white';
       } else if (this.gameService.targetWord.includes(char)) {
-        this.keys[char] = 'bg-yellow-400 text-white';
+        this.keys[char] = '!bg-yellow-400 !text-white';
       } else {
-        this.keys[char] = 'bg-slate-400 text-white';
+        this.keys[char] = '!bg-slate-400 !text-white';
       }
     }
   }
 
-  toggleGiveUpPopup() {
-    this.isGiveUp = !this.isGiveUp;
+  toggleGameOverPopup() {
+    this.isGameOver = !this.isGameOver;
   }
 
   resetGame() {
@@ -184,9 +188,10 @@ export class GameLayoutComponent implements OnInit {
     this.board = this.gameService.initializeBoard();
     this.initializeKeys();
     this.guess = "";
+    this.message = "";
     this.previousInput = "";
     this.previousInputLength = 0;  
     this.isSubmitRow = [false, false, false, false, false];
-    this.toggleGiveUpPopup();
+    this.toggleGameOverPopup();
   }
 }
