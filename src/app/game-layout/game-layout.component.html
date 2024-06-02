@@ -1,7 +1,7 @@
 <div class="min-w-screen min-h-screen flex justify-center items-center py-5"
   (click)="focusOnInput()"
 >
-  <div class="max-w-lg">
+  <div class="w-full max-w-lg px-4 lg:px-0">
     <div class="flex justify-between items-center mb-5">
       <h1 class="text-center text-lg font-bold">Wordle Game</h1>
       <button class="text-sm font-semibold px-3 py-2 bg-slate-200 rounded ease-in-out duration-150 hover:bg-slate-300"
@@ -37,7 +37,7 @@
 
     <div class="flex justify-center">
       <div class="space-y-2 mt-5">
-        <div *ngFor="let row of keyboardKeys" class="flex space-x-2 justify-center">
+        <div *ngFor="let row of keyboardKeys" class="flex space-x-1 lg:space-x-2 justify-center">
           <app-keyboard-key
             *ngFor="let key of row"
             [key]="key"
