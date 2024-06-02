@@ -4,7 +4,9 @@
   <div class="max-w-lg">
     <div class="flex justify-between items-center mb-5">
       <h1 class="text-center text-lg font-bold">Wordle Game</h1>
-      <button class="text-sm font-semibold px-3 py-2 bg-slate-200 rounded ease-in-out duration-150 hover:bg-slate-300">
+      <button class="text-sm font-semibold px-3 py-2 bg-slate-200 rounded ease-in-out duration-150 hover:bg-slate-300"
+        (click)="toggleGiveUpPopup()"
+      >
         Give up
       </button>
     </div>
@@ -55,5 +57,30 @@
 >
   <div class="bg-white rounded-lg shadow-xl p-4">
     {{ message }}
+  </div>
+</div>
+
+<div 
+  *ngIf="isGiveUp"
+  class="w-screen h-screen absolute top-0 left-0 right-0 mx-auto flex justify-center items-center"
+>
+  <div class="bg-white rounded-lg shadow-xl w-[350px] overflow-hidden">
+
+    <div class="bg-blue-100 text-center font-bold p-3">
+      You Lost!
+    </div>
+    
+    <div class="flex flex-col p-5 gap-4">
+      <h6 class="text-center text-sm">The answer was:</h6>
+      <span class="border border-slate-400 border-dashed rounded w-fit p-2 flex mx-auto font-semibold tracking-wider">
+        {{ gameService.targetWord }}
+      </span>
+      <button class="flex mx-auto w-fit text-sm font-semibold px-3 py-2 bg-blue-500 text-white rounded ease-in-out duration-150 hover:bg-blue-600"
+        (click)="resetGame()"
+      >
+        NEW GAME
+      </button>
+    </div>
+
   </div>
 </div>

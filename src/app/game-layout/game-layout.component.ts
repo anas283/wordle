@@ -17,16 +17,15 @@ export class GameLayoutComponent implements OnInit {
   keys: { [key: string]: string } = {};
 
   board: string[][] = [];
-  currentGuess: string = '';
   message: string = '';
   guess: string = '';
-  combineLetter: string = '';
   previousInput: string = '';
   previousInputLength: number = 0;
   isSubmitRow: boolean[] = [false, false, false, false, false];
+  isGiveUp: boolean = false;
 
   constructor(
-    private gameService: GameService,
+    public gameService: GameService,
   ) {}
 
   ngOnInit() {
@@ -135,7 +134,7 @@ export class GameLayoutComponent implements OnInit {
 
     setTimeout(() => {
       this.message = '';
-    }, 2000);
+    }, 1000);
   }
 
   getGuessIndex(rowIndex: number, colIndex: number): number {
@@ -158,7 +157,7 @@ export class GameLayoutComponent implements OnInit {
 
   initializeKeys() {
     const allKeys = this.keyboardKeys.flat();
-    allKeys.forEach(key => this.keys[key] = 'bg-gray-300');
+    allKeys.forEach(key => this.keys[key] = 'bg-slate-200');
   }
 
   updateKeyColors() {
@@ -172,5 +171,22 @@ export class GameLayoutComponent implements OnInit {
         this.keys[char] = 'bg-slate-400 text-white';
       }
     }
+  }
+
+  toggleGiveUpPopup() {
+    this.isGiveUp = !this.isGiveUp;
+  }
+
+  resetGame() {
+    this.gameService.initializeTargetWord();
+    this.gameService.resetBoard();
+    this.gameService.activeRow = 0;
+    this.board = this.gameService.initializeBoard();
+    this.initializeKeys();
+    this.guess = "";
+    this.previousInput = "";
+    this.previousInputLength = 0;  
+    this.isSubmitRow = [false, false, false, false, false];
+    this.toggleGiveUpPopup();
   }
 }

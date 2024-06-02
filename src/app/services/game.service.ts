@@ -22,6 +22,10 @@ export class GameService {
     return this.board;
   }
 
+  resetBoard() {
+    this.board = Array(6).fill('').map(() => Array(5).fill(''));
+  }
+
   submitGuess(guess: string) {
     this.activeRow += 1;
 
@@ -31,7 +35,7 @@ export class GameService {
     }
 
     const solved = guess === this.targetWord;
-    const message = solved ? 'Correct guess!' : 'Try again!';
+    const message = solved ? 'Correct guess!' : '';
     return { success: true, message, board: this.board, solved };
   }
 
