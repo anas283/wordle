@@ -29,6 +29,7 @@ export class GameLayoutComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.gameService.initializeTargetWord();
     this.board = this.gameService.initializeBoard();
   }
 

@@ -1,14 +1,22 @@
 import { Injectable } from '@angular/core';
+import words from 'an-array-of-english-words';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
-  targetWord: string = 'APPLE';
+  targetWord: string = '';
   private board: string[][] = Array(6).fill('').map(() => Array(5).fill(''));
   activeRow: number = 0;
 
   constructor() { }
+
+  initializeTargetWord() {
+    const wordsList = words.filter(word => word.length === 5);
+    const randomIndex = Math.floor(Math.random() * wordsList.length);
+    const randomWord = wordsList[randomIndex];
+    this.targetWord = randomWord.toUpperCase();;
+  }
 
   initializeBoard(): string[][] {
     return this.board;
