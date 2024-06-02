@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { GameService } from '../services/game.service';
 
 @Component({
@@ -22,10 +22,10 @@ export class GameLayoutComponent implements OnInit {
   combineLetter: string = '';
   previousInput: string = '';
   previousInputLength: number = 0;
+  isSubmitRow: boolean[] = [false, false, false, false, false];
 
   constructor(
     private gameService: GameService,
-    private renderer: Renderer2
   ) {}
 
   ngOnInit() {
@@ -109,8 +109,13 @@ export class GameLayoutComponent implements OnInit {
   submitGuess() {
     if (this.guess.length !== 5) {
       this.message = 'Guess must be 5 letters long.';
+      setTimeout(() => {
+        this.message = '';
+      }, 2000);
       return;
     }
+
+    this.isSubmitRow[this.gameService.activeRow] = true;
 
     const result = this.gameService.submitGuess(this.guess);
     if (result.success) {
@@ -128,5 +133,23 @@ export class GameLayoutComponent implements OnInit {
     setTimeout(() => {
       this.message = '';
     }, 2000);
+  }
+
+  getGuessIndex(rowIndex: number, colIndex: number): number {
+    const letter = this.board[rowIndex][colIndex];
+    const solutionArray = this.gameService.targetWord.split('');
+    
+    /*
+      0 = wrong
+      1 = almost correct
+      2 = correct
+    */
+    if (letter === this.gameService.targetWord[colIndex]) {
+      return 2;
+    } else if (solutionArray.includes(letter)) {
+      return 1;
+    } else {
+      return 0;
+    }
   }
 }

@@ -1,3 +1,13 @@
-<div class="w-14 h-14 bg-slate-50 border-2 border-slate-300 rounded flex justify-center items-center text-3xl font-bold">
+<div
+  class="w-14 h-14 text-slate-800 bg-slate-50 border-2 border-slate-300 rounded flex justify-center items-center text-3xl font-bold ease-in-out duration-150"
+  [ngClass]="{
+    'border-slate-400': letter,
+    'scale-110': isAnimateFilled,
+    'transform -scale-y-100': (letter && isAnimateFlip),
+    '!bg-slate-400 !text-white': (guessIndex === 0 && isWordComplete),
+    '!bg-yellow-400 !border-yellow-400 !text-white': (guessIndex === 1 && isWordComplete),
+    '!bg-green-400 !border-green-400 !text-white': (guessIndex === 2 && isWordComplete)
+  }"
+>
   {{ letter }}
 </div>

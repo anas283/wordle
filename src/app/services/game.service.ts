@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class GameService {
-  private targetWord: string = 'APPLE';
+  targetWord: string = 'APPLE';
   private board: string[][] = Array(6).fill('').map(() => Array(5).fill(''));
   activeRow: number = 0;
 
