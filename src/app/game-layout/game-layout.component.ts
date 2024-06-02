@@ -14,6 +14,7 @@ export class GameLayoutComponent implements OnInit {
     ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
     ['Del', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'Enter']
   ];
+  keys: { [key: string]: string } = {};
 
   board: string[][] = [];
   currentGuess: string = '';
@@ -117,6 +118,7 @@ export class GameLayoutComponent implements OnInit {
     }
 
     this.isSubmitRow[this.gameService.activeRow] = true;
+    this.updateKeyColors();
 
     const result = this.gameService.submitGuess(this.guess);
     if (result.success) {
@@ -151,6 +153,24 @@ export class GameLayoutComponent implements OnInit {
       return 1;
     } else {
       return 0;
+    }
+  }
+
+  initializeKeys() {
+    const allKeys = this.keyboardKeys.flat();
+    allKeys.forEach(key => this.keys[key] = 'bg-gray-300');
+  }
+
+  updateKeyColors() {
+    for (let i = 0; i < this.guess.length; i++) {
+      const char = this.guess[i];
+      if (char === this.gameService.targetWord[i]) {
+        this.keys[char] = 'bg-green-400 text-white';
+      } else if (this.gameService.targetWord.includes(char)) {
+        this.keys[char] = 'bg-yellow-400 text-white';
+      } else {
+        this.keys[char] = 'bg-slate-400 text-white';
+      }
     }
   }
 }

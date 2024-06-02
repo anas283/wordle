@@ -1,7 +1,14 @@
-<div class="min-w-screen min-h-screen flex justify-center items-center py-10"
+<div class="min-w-screen min-h-screen flex justify-center items-center py-5"
   (click)="focusOnInput()"
 >
   <div class="max-w-lg">
+    <div class="flex justify-between items-center mb-5">
+      <h1 class="text-center text-lg font-bold">Wordle Game</h1>
+      <button class="text-sm font-semibold px-3 py-2 bg-slate-200 rounded ease-in-out duration-150 hover:bg-slate-300">
+        Give up
+      </button>
+    </div>
+
     <div class="flex justify-center">
       <div class="flex flex-col gap-2 relative">
         <div *ngFor="let row of board; let rowIndex = index" class="flex flex-row gap-2">
@@ -33,6 +40,7 @@
             *ngFor="let key of row"
             [key]="key"
             (click)="onKeyboardUiChange(key)"
+            [class]="keys[key]"
           >
           </app-keyboard-key>
         </div>
